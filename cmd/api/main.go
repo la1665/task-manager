@@ -1,3 +1,8 @@
+// @title           Task Manager API
+// @version         1.0
+// @description     A simple task management REST API built with Gin, PostgreSQL, and TDD.
+// @host            localhost:8080
+// @BasePath        /
 package main
 
 import (
@@ -12,6 +17,10 @@ import (
 	"github.com/la1665/task-manager/internal/handler"
 	"github.com/la1665/task-manager/internal/repository"
 	"github.com/la1665/task-manager/internal/service"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/la1665/task-manager/docs"
 )
 
 func main() {
@@ -34,6 +43,7 @@ func main() {
 
 	router := gin.Default()
 	router.GET("/health", handler.HealtHandler)
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	tasks := router.Group("/tasks")
 	{

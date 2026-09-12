@@ -19,6 +19,16 @@ func NewTaskHandler(s service.TaskService) *TaskHandler {
 	return &TaskHandler{service: s}
 }
 
+// CreateTask godoc
+// @Summary      Create a new task
+// @Description  Create a task with title, assignee, and optional description/status/priority
+// @Tags         tasks
+// @Accept       json
+// @Produce      json
+// @Param        task  body      dto.CreateTaskRequest  true  "Task to create"
+// @Success      201   {object}  dto.TaskResponse
+// @Failure      400   {object}  map[string]string
+// @Router       /tasks [post]
 func (h *TaskHandler) CreateTask(c *gin.Context) {
 	var req dto.CreateTaskRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -34,6 +44,15 @@ func (h *TaskHandler) CreateTask(c *gin.Context) {
 	c.JSON(http.StatusCreated, task)
 }
 
+// GetTask godoc
+// @Summary      Get a task by ID
+// @Tags         tasks
+// @Produce      json
+// @Param        id   path      int  true  "Task ID"
+// @Success      200  {object}  dto.TaskResponse
+// @Failure      400  {object}  map[string]string
+// @Failure      404  {object}  map[string]string
+// @Router       /tasks/{id} [get]
 func (h *TaskHandler) GetTask(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -53,6 +72,12 @@ func (h *TaskHandler) GetTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
+// ListTasks godoc
+// @Summary      List all tasks
+// @Tags         tasks
+// @Produce      json
+// @Success      200  {array}   dto.TaskResponse
+// @Router       /tasks [get]
 func (h *TaskHandler) ListTasks(c *gin.Context) {
 	tasks, err := h.service.ListTasks(c.Request.Context())
 	if err != nil {
@@ -62,6 +87,18 @@ func (h *TaskHandler) ListTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, tasks)
 }
 
+// UpdateTask godoc
+// @Summary      Update a task
+// @Description  Partially update a task; only provided fields are changed
+// @Tags         tasks
+// @Accept       json
+// @Produce      json
+// @Param        id    path      int                    true  "Task ID"
+// @Param        task  body      dto.UpdateTaskRequest  true  "Fields to update"
+// @Success      200   {object}  dto.TaskResponse
+// @Failure      400   {object}  map[string]string
+// @Failure      404   {object}  map[string]string
+// @Router       /tasks/{id} [put]
 func (h *TaskHandler) UpdateTask(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -87,6 +124,14 @@ func (h *TaskHandler) UpdateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
+// DeleteTask godoc
+// @Summary      Delete a task
+// @Tags         tasks
+// @Param        id   path  int  true  "Task ID"
+// @Success      204  "No Content"
+// @Failure      400  {object}  map[string]string
+// @Failure      404  {object}  map[string]string
+// @Router       /tasks/{id} [delete]
 func (h *TaskHandler) DeleteTask(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
