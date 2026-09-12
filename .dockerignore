@@ -1,0 +1,15 @@
+.git
+.gitignore
+.env
+.env.*
+coverage.out
+coverage.html
+*.test
+README.md
+*.md
+.vscode/
+.idea/
+*.swp
+.DS_Store
+bin/
+/task-manager

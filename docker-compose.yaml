@@ -17,6 +17,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://taskuser:taskpass@postgres:5432/taskmanager?sslmode=disable
+      PORT: "8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   pgdata:
