@@ -6,6 +6,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -15,8 +16,10 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/la1665/task-manager/internal/handler"
+	"github.com/la1665/task-manager/internal/metrics"
 	"github.com/la1665/task-manager/internal/repository"
 	"github.com/la1665/task-manager/internal/service"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -41,8 +44,17 @@ func main() {
 	taskService := service.NewTaskService(taskRepo)
 	taskHandler := handler.NewTaskHandler(taskService)
 
+	// Initialize tasks_count metric
+	if existing, err := taskService.ListTasks(context.Background()); err == nil {
+		metrics.TasksCount.Set(float64(len(existing)))
+	} else {
+		log.Printf("warning: failed to initialize tasks_count metric: %v", err)
+	}
+
 	router := gin.Default()
+	router.Use(handler.MetricsMiddleware())
 	router.GET("/health", handler.HealtHandler)
+	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	tasks := router.Group("/tasks")

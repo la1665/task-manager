@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/la1665/task-manager/internal/dto"
+	"github.com/la1665/task-manager/internal/metrics"
 	"github.com/la1665/task-manager/internal/model"
 	"github.com/la1665/task-manager/internal/repository"
 )
@@ -71,6 +72,7 @@ func (s *taskService) CreateTask(ctx context.Context, req dto.CreateTaskRequest)
 		return nil, err
 	}
 
+	metrics.TasksCount.Inc()
 	return toTaskResponse(task), nil
 }
 
@@ -130,5 +132,6 @@ func (s *taskService) DeleteTask(ctx context.Context, id int64) error {
 	if err := s.repo.Delete(ctx, id); err != nil {
 		return err
 	}
+	metrics.TasksCount.Dec()
 	return nil
 }
