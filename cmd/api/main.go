@@ -52,8 +52,9 @@ func main() {
 	}
 
 	router := gin.Default()
+	router.Use(handler.TracingMiddleware())
 	router.Use(handler.MetricsMiddleware())
-	router.GET("/health", handler.HealtHandler)
+	router.GET("/health", handler.HealthHandler)
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

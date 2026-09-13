@@ -9,12 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func TestHealtHandler(t *testing.T) {
+func TestHealthHandler(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
-	router.GET("/healt", HealtHandler)
+	router.GET("/health", HealthHandler)
 
-	req, err := http.NewRequest(http.MethodGet, "/healt", nil)
+	req, err := http.NewRequest(http.MethodGet, "/health", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
