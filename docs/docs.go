@@ -340,7 +340,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Task Manager API",
-	Description:      "A simple task management REST API built with Gin, PostgreSQL.",
+	Description:      "A simple task management REST API built with Gin, PostgreSQL, and TDD.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

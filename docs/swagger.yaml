@@ -62,7 +62,7 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: A simple task management REST API built with Gin, PostgreSQL.
+  description: A simple task management REST API built with Gin, PostgreSQL, and TDD.
   title: Task Manager API
   version: "1.0"
 paths:

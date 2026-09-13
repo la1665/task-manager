@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "A simple task management REST API built with Gin, PostgreSQL.",
+        "description": "A simple task management REST API built with Gin, PostgreSQL, and TDD.",
         "title": "Task Manager API",
         "contact": {},
         "version": "1.0"
